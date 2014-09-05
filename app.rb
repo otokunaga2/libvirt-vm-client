@@ -5,8 +5,12 @@ require './ruby-libvirt.rb'
 get '/' do
  # libvirController = LibvritClinet.new
 #  @vmlist = libvirController.compareVMList
-  create_connection
-  #@vmlist = @cont.getVMList
+  #create_connection
+  @temp_conn = create_connection
+  @list= @temp_conn.getDomainsList
+  @compare_vmlist= compare_vmlist
+  p @llst
+  #@list = []
   erb :index
 end
 
@@ -14,12 +18,18 @@ end
 helpers do 
   def create_connection
     @cont = LibClient.new
+    return @cont
   end
+  def compare_vmlist
+    @cont = self.create_connection
+    return @cont.compareVMList
+  end
+  
 end
 
 post '/' do
   create_connection
-  @vmlist = @cont.getVMList
+  @vmlist = @cont.getMList
   erb :index
 end
 
@@ -28,4 +38,3 @@ error do
 end
 
 
-set :public, 'public'

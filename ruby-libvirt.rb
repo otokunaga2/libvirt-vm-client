@@ -8,13 +8,19 @@ class LibClient
     #set up the specific ip address 
     @con = Libvirt::open("xen+tcp://192.168.0.251")
     @vmlist=[]
+    @vm_detail_list=[]
     @con.list_domains.each do |domid|
       dom = @con.lookup_domain_by_id(domid)
       puts " Domain #{dom.name}"
       @vmlist.push(dom.name)
+      @vm_detail_list.push([["domain_name",dom.name],["domain_state",dom.state]])
     end
   end
-  
+
+  def getDomainsList
+     return @vm_detail_list
+  end 
+
   #should stand up the vm
   def compareVMList #  p File.absolute_path("..")
   #
@@ -53,8 +59,7 @@ class LibClient
     dom.create    
   end
   def rebootVM
-   
-  end
+   end
 
   def suspend(suspend_target_vm)
     @vm = getSpecificDomain(target_vm)
@@ -79,6 +84,8 @@ class LibClient
 end
 
 
-#c.reboot("win7-001")
-#c.getVMList
 
+temp = LibClient.new
+p temp.getDomainsList
+
+#p temp.instance_variable_get('@vm_detail_list')

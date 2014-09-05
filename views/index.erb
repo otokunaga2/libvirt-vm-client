@@ -10,21 +10,18 @@
         <h4>VMWebChecker</h4>
       </div>
       <div id ="current">
-        現在起動中ノVM
-        <% @vmlist.each do |vm| %>
-        <p><%= vm %> </p>
-
+        現在ノドメイン情報
+        <% @list.each do |domain| %>
+          <% domain.each do |subdomain| %>
+            <%= subdomain[1] %> 
+          <% end %>
         <% end %>
       </div>
       <div class="span8">
         きどうしてないVMたち
-      <!--  <% @vms.each do |element_vm| %>
-        <p><%= element_vm%> </p>
-        <form action="/" method="get">
-          <button type="submit" id="compare"> 起動 </button>
-        </form>
+        <% @compare_vmlist.each do |nworkingdomain| %>
+          <%= nworkingdomain %>
         <% end %>
-      </div>-->
     </div>
   </body>
 </html>
