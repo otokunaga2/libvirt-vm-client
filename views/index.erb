@@ -1,0 +1,24 @@
+<html>
+  <head>
+   <title>VMWebChecker</title>
+   <meta charset=utf-8>
+   <link rel="stylesheet" href="css/bootstrap.min.csss" >
+  </head>
+  <body>
+    <div class="row-fluid">
+      <div id="header">
+        <h4>VMWebChecker</h4>
+      </div>
+      <div id ="current">
+        現在起動中ノVM
+        <% @vmlist.each do |vm| %>
+        <p><%= vm %> </p>
+
+        <% end %>
+      </div>
+      <div class="span8">
+        きどうしてないVMたち
+    </div>
+  </body>
+</html>
+
