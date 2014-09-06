@@ -18,7 +18,8 @@ class LibClient
   end
 
   def getDomainsList
-     return @vm_detail_list
+     return @vmlist
+     #return @vm_detail_list
   end 
 
   #should stand up the vm

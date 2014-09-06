@@ -1,20 +1,9 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require './ruby-libvirt.rb'
+require 'haml'
 
-get '/' do
- # libvirController = LibvritClinet.new
-#  @vmlist = libvirController.compareVMList
-  #create_connection
-  @temp_conn = create_connection
-  @list= @temp_conn.getDomainsList
-  @compare_vmlist= compare_vmlist
-  p @llst
-  #@list = []
-  erb :index
-end
-
-#共通処理を記述するお
+#共通処理
 helpers do 
   def create_connection
     @cont = LibClient.new
@@ -27,14 +16,28 @@ helpers do
   
 end
 
+get '/' do
+  @temp_conn = create_connection
+  @list= @temp_conn.getDomainsList
+  @compare_vmlist= compare_vmlist
+  #erb :index
+  haml :index
+end
+
+
+get '/vm/delete/*' do
+  @test = params[:splat]
+  haml :test
+end
 post '/' do
   create_connection
+
   @vmlist = @cont.getMList
-  erb :index
+  haml :index
 end
 
 error do
   'エラーが発生しました。 - ' + env['sinatra.error'].name
 end
 
-
+set :public, File.dirname("./public/css") 

@@ -1,4 +1,7 @@
 source 'http://rubygems.org'
 gem 'sinatra'
 gem 'sinatra-reloader'
-gem 'ruby-libvirt'
+#gem 'ruby-libvirt'
+gem 'haml'
+gem 'sass'
+gem 'coffee-script'

@@ -2,26 +2,52 @@
   <head>
    <title>VMWebChecker</title>
    <meta charset=utf-8>
-   <link rel="stylesheet" href="css/bootstrap.min.csss" >
+   <link rel="stylesheet" href="css/bootstrap.min.css" >
+   <link rel="stylesheet" href="css/bootstrap-theme.min.css" >
   </head>
   <body>
-    <div class="row-fluid">
-      <div id="header">
-        <h4>VMWebChecker</h4>
-      </div>
-      <div id ="current">
-        現在ノドメイン情報
-        <% @list.each do |domain| %>
-          <% domain.each do |subdomain| %>
-            <%= subdomain[1] %> 
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">Overview</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Export</a></li>
+        </ul>
+        </div> 
+        <div class="col-sm-9 col-sm-offset-3">
+        <h1 class="page-header">Dashboard</h1>
+        <div id="header">
+          <h4>VMWebChecker</h4>
+        </div>
+     <!--  <button type="button"> button</button>
+        <table class"table">
+           <tr class="active">
+            <td> test</td>
+          </tr>
+          <tr>
+            <td> test</td>
+          </tr>
+        </table>-->
+        起動中のVM:
+        <div class="table" id ="current">
+          <tr>
+          <% @list.each do |domain| %>
+            <td>
+            <%= domain %>
+            </td>
           <% end %>
-        <% end %>
+          </tr>
+        </div>
+        <div class="test">
+          きどうしてないVMたち
+          <% @compare_vmlist.each do |nworkingdomain| %>
+            <%= nworkingdomain %>
+          <% end %>
+
+         </div>
       </div>
-      <div class="span8">
-        きどうしてないVMたち
-        <% @compare_vmlist.each do |nworkingdomain| %>
-          <%= nworkingdomain %>
-        <% end %>
     </div>
   </body>
 </html>

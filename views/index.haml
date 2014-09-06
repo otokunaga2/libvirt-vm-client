@@ -1,0 +1,23 @@
+!!!
+%html
+ %head
+  %title VMcheker
+  %link(rel="stylesheet" href="css/bootstrap.min.css")
+  %link(rel="stylesheet" href="css/bootstrap-theme.min.css")
+ %body
+  %div{class: "container" }
+   %div{class: "row" }
+    %div{class: "col-sm-3 col-md-2 sidebar"}
+     %ul{class: "nav nav-sidebar"}
+      %li{class: "active"}
+      %a Overview
+   %div{class: "col-sm-9 col-sm-offset-3"}
+    #header 
+    %h1 VMcheker
+    #content
+    %table
+     %tr
+      - @list.each do |item|
+       %td= item
+       %form{:action => "/vm/delete/#{item}", :method => "delete"}
+        %input{:type => "submit", :value =>"halt", :id=> item}
