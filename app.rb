@@ -16,24 +16,22 @@ helpers do
   
 end
 
-get '/' do
+before do
   @temp_conn = create_connection
   @list= @temp_conn.getDomainsList
   @compare_vmlist= compare_vmlist
-  #erb :index
-  haml :index
 end
-
-
+get '/' do
+  erb :index
+end
 get '/vm/delete/*' do
-  @test = params[:splat]
-  haml :test
+  erb :index
 end
 post '/' do
   create_connection
 
   @vmlist = @cont.getMList
-  haml :index
+  erb :index
 end
 
 error do
@@ -41,3 +39,4 @@ error do
 end
 
 set :public, File.dirname("./public/css") 
+set :environment, :production
