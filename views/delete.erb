@@ -1,5 +1,3 @@
-<html>
-  <head>
    <title>VMWebChecker</title>
    <meta charset=utf-8>
    <link rel="stylesheet" href="css/bootstrap.min.css" >
@@ -10,11 +8,11 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-        <li class="active"><a href="#">Overview</a></li>
+       <!-- <li class="active"><a href="#">Overview</a></li>
         <li><a href="#">Reports</a></li>
         <li><a href="#">Analytics</a></li>
         <li><a href="#">Export</a></li>
-        </ul>
+        </ul>-->
         </div> 
         <div class="col-sm-9 col-sm-offset-3">
         <h1 class="page-header">Dashboard</h1>
@@ -30,7 +28,7 @@
             <td> test</td>
           </tr>
         </table>-->
-        起動中のVM:
+				now working
         <div class="table" id ="current">
           <tr>
           <% @list.each do |domain| %>
@@ -41,7 +39,7 @@
           </tr>
         </div>
         <div class="test">
-          きどうしてないVMたち
+				  not working
           <% @compare_vmlist.each do |nworkingdomain| %>
             <%= nworkingdomain %>
           <% end %>
