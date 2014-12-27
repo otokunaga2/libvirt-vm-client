@@ -26,7 +26,7 @@ class LibClient
         dom = @con.lookup_domain_by_id(domid)
 				temp_vm_domain = get_specific_domain(dom.name)
 				if temp_vm_domain.info.state == RUNNING
-					 @running_vm_list.push(dom.name)
+				 @running_vm_list.push(dom.name)
 						puts temp_vm_domain.info.inspect
 						#	@running_vm_list.push(temp_vm_domain.hostname)
 				elsif temp_vm_domain.info.state == IDLE

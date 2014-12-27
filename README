@@ -1,0 +1,9 @@
+
+
+
+/*table*/
+create table vmtarget(
+vmname varchar(20) primary key,
+lastconnection text
+);
+insert into vmtarget values ("win7-001", null);

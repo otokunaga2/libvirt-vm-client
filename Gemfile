@@ -7,3 +7,5 @@ gem 'sass'
 gem 'coffee-script'
 gem 'rspec'
 gem 'rubocop'
+gem "sqlite3"
+gem "activerecord"

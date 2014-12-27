@@ -35,7 +35,11 @@ get '/vm/resume/*' do
     vm_str_name = vm_name[0].to_s	
 		puts vm_str_name.inspect
 		vm = @libvirt_insatance.get_specific_domain(vm_str_name)
-		vm.resume
+		if( vm.state.first == 3)
+			vm.resume
+		else
+			@error_message="already running"
+		end
 	rescue => e
 		@error_message=e
 		puts "No method error#{e}"
@@ -51,7 +55,12 @@ get '/vm/suspend/*' do
 	begin
     vm_str_name = vm_name[0].to_s	
 		vm = @libvirt_insatance.suspend(vm_str_name)
-		vm.suspend
+
+		if( vm.state.first != 3)
+			vm.suspend
+		else
+			@error_message="already suspended"
+		end
 	rescue => e
 		@error_message=e
 		puts "No method error#{e}"
@@ -73,29 +82,17 @@ get '/vm/reboot/*' do
   #@libvirt_insatance.reboot(vm_str_name)
   erb :index
 end
-get '/vm/suspend/*' do
-	puts params[:splat]
-  vm_name = params[:splat]
-	begin
-  @libvirt_insatance.suspend(vm_name.to_s)
-	rescue=>e
-		@error_message="failed to suspend vm #{e}"
-		#raise e
-	end
-  erb :index
-end
-get '/vm/run' do
-	erb :index
-end
-get '/vm/delete/*' do
-  erb :index
-end
-post '/' do
-  create_connection
-
-  @vmlist = @cont.getMList
-  erb :index
-end
+#get '/vm/suspend/*' do
+#	puts params[:splat]
+#  vm_name = params[:splat]
+#	begin
+#  @libvirt_insatance.suspend(vm_name.to_s)
+#	rescue=>e
+#		@error_message="failed to suspend vm #{e}"
+#		#raise e
+#	end
+#  erb :index
+#end
 
 error do
   'エラーが発生しました。 - ' + env['sinatra.error'].name
