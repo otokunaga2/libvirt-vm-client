@@ -2,7 +2,6 @@
   <head>
    <title>VMWebChecker</title>
    <meta charset=utf-8>
-	 
    <link rel="stylesheet" href="http://localhost:4567/css/bootstrap.min.css" >
    <link rel="stylesheet" href="http://localhost:4567/css/bootstrap-theme.min.css" >
   </head>
@@ -16,72 +15,83 @@
         </div> 
         <div class="col-sm-9 col-sm-offset-3">
         <h1 class="page-header">VM working manager</h1>
-       <!-- <div id="header">
-          <h4>VMWebChecker</h4>
-        </div>-->
-     <!--  <button type="button"> button</button>
-        <table class"table">
-           <tr class="active">
-            <td> test</td>
-          </tr>
-          <tr>
-            <td> test</td>
-          </tr>
-        </table>-->
-				<div class="panel panel-default">
-				<!-- Default panel contents -->
-				  <div class="panel-heading">Running</div>
+				<!--<div class="panel panel-default">-->
+
+				<h3>running vms</h3>
+				<table class="table">
+				  <thead>
+				  	<tr>
+				  		<th> domain name </th>
+				  		<th> action </th>
+				  	</tr>
+				  </thead>
+					<tbody>
             <% @list.each do |domain| %>
-
-          		<div class="table" id ="current">
               <tr>
-              <td>
-              <%= domain %>
-							</td>
-								
-              <td>
-				  		<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
-              </td>
+                <td>
+                  <%= domain %>
+							   </td>
+                <td>
+				  		    <a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
+                </td>
 							</tr>
-          		</div>
             <% end %>
+						</tbody>
 				</div>
+				</table>
+				<h3>suspended vms</h3>
 
-				<h3>idling vms</h3>
-        <div class="table" id ="current">
-          <tr>
-          <% @idle_vm_list.each do |domain| %>
-            <td>
-            <%= domain %>
-						<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
-            </td>
-          <% end %>
-          </tr>
-        </div>
+				<table class="table">
+				  <thead>
+				  	<tr>
+				  		<th> domain name </th>
+				  		<th> action </th>
+				  	</tr>
+				  </thead>
 
-				<h3>hold vms</h3>
-        <div class="table" id ="current">
-          <tr>
-          <% @hold_vm_list.each do |domain| %>
-            <td>
-            <%= domain %>
-						<a href="/vm/resume/<%=domain%>" class="btn">resume</a>
-						<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
-            </td>
-          <% end %>
-          </tr>
-        </div>
+					<tbody>
+              <% @hold_vm_list.each do |domain| %>
+            	<tr>
+                <td>
+                  <%= domain %>
+                </td>
+								<td>
+					    	<a href="/vm/resume/<%=domain%>" class="btn">resume</a>
+					    	<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
+                </td>
+            </tr>
+              <% end %>
+					</tbody>
+				</div>
+				</table>
 				<h3> check target list </h3>
-        <div class="test">
-					<% if @error_message != nil  %>
+
+				<table class="table">
+				  <thead>
+				  	<tr>
+				  		<th> domain name </th>
+				  		<th> last suspend time </th>
+				  	</tr>
+				  </thead>
+
+					<tbody>
+          <% @compare_vmlist.each do |not_working| %>
+					 <tr>
+					  <td>
+              <%= not_working %>
+					  </td>
+					  <td>
+						  <a href="/vm/run/<%=not_working%>" class="btn">run</a>
+						</td>
+					 </tr>
+          <% end %>
+					</tbody>
+				</table>
+				<h4> error message </h4>
+				  <p>	<% if @error_message != nil  %>
 						<%= @error_message %>
           <% end %>
-          <% @compare_vmlist.each do |nworkingdomain| %>
-            <%= nworkingdomain %>
-						<a href="/vm/run/<%=nworkingdomain%>" class="btn">run</a>
-          <% end %>
-
-         </div>
+				  </p>
       </div>
     </div>
   </body>
