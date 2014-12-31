@@ -2,52 +2,48 @@
   <head>
    <title>VMWebChecker</title>
    <meta charset=utf-8>
-   <link rel="stylesheet" href="css/bootstrap.min.css" >
-   <link rel="stylesheet" href="css/bootstrap-theme.min.css" >
+   <link rel="stylesheet" href="../css/bootstrap.min.css" >
+   <link rel="stylesheet" href="../css/bootstrap-theme.min.css" >
   </head>
   <body>
     <div class="container">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-        <li class="active"><a href="#">Overview</a></li>
-        <li><a href="#">Reports</a></li>
+        <li class=""><a href="/">Home</a></li>
+				<!--
+        <li><a href="#">CheckList</a></li>
         <li><a href="#">Analytics</a></li>
-        <li><a href="#">Export</a></li>
-        </ul>
+        <li><a href="#">Export</a></li>-->
+          </ul>
         </div> 
         <div class="col-sm-9 col-sm-offset-3">
-        <h1 class="page-header">Dashboard</h1>
+        <h1 class="page-header">Check Target list </h1>
         <div id="header">
-          <h4>VMWebChecker</h4>
+          <h4>  register VM name </h4>
+					<form action="http://localhost:4567/vm/create" method="POST">
+					  <input type="text" name="vm_name" >
+					  </input>
+					  <input type="submit" text="create">
+					  </input>
+					</form>
         </div>
-     <!--  <button type="button"> button</button>
-        <table class"table">
-           <tr class="active">
-            <td> test</td>
-          </tr>
-          <tr>
-            <td> test</td>
-          </tr>
-        </table>-->
-        起動中のVM:
-        <div class="table" id ="current">
-          <tr>
-          <% @list.each do |domain| %>
-            <td>
-            <%= domain %>
-            </td>
-          <% end %>
-          </tr>
-        </div>
-        <div class="test">
-          きどうしてないVMたち
-          <% @compare_vmlist.each do |nworkingdomain| %>
-            <%= nworkingdomain %>
-          <% end %>
-
-         </div>
-      </div>
+			
+				
+				<h3>Registered Vm lists</h3>
+				<div class="panel panel-default">
+          <table class="table" id ="current">
+            <% @checklist.each do |domain| %>
+            <tr>
+              <td>
+              <%= domain.id %>
+				  		<a href="/vm/edit/<%=domain.id%>" class="btn">Edit</a>
+				  		<a href="/vm/delete/<%=domain.id%>" class="btn">Delete</a>
+              </td>
+            </tr>
+            <% end %>
+          </table>
+				<div>
     </div>
   </body>
 </html>

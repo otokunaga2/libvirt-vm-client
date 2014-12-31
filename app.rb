@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
-require './ruby-libvirt.rb'
-
+require './libvirt-wrapper.rb'
+require './dbmanager.rb'
 #共通処理
 helpers do 
 	@error_message=nil
@@ -13,12 +13,10 @@ helpers do
     @cont = self.create_connection
     return @cont.compareVMList
   end
-  
 end
 
 before do
   @libvirt_insatance = create_connection
-
   @list= @libvirt_insatance.getDomainsList
 	@idle_vm_list = @libvirt_insatance.idle_vm_list
 	@hold_vm_list = @libvirt_insatance.hold_vm_list
@@ -28,7 +26,12 @@ get '/' do
 	erb :index
 end
 
-
+get '/vm/delete/*' do
+  vm_name = params[:splat]
+	vm_str = vm_name[0].to_s
+  target_domain = Vmdomain.where(:id=>vm_str).first
+	target_domain.destroy
+end
 get '/vm/resume/*' do
   vm_name = params[:splat]
 	begin
@@ -55,12 +58,14 @@ get '/vm/suspend/*' do
 	begin
     vm_str_name = vm_name[0].to_s	
 		vm = @libvirt_insatance.suspend(vm_str_name)
-
-		if( vm.state.first != 3)
-			vm.suspend
-		else
-			@error_message="already suspended"
-		end
+    if vm 
+		  Vmdomain.update_suspend_time(vm_str_name)
+		  if(vm.state.first != 3)
+		   	vm.suspend
+		  else
+		  	@error_message="already suspended"
+		  end
+	  end	
 	rescue => e
 		@error_message=e
 		puts "No method error#{e}"
@@ -82,6 +87,26 @@ get '/vm/reboot/*' do
   #@libvirt_insatance.reboot(vm_str_name)
   erb :index
 end
+
+get '/vm/create' do
+	@checklist = Vmdomain.all
+  erb :create
+end
+
+#get 'vm/edit' do
+#	@checklist = Vmdomain.all
+#	erb :create
+#end
+post '/vm/create' do
+  raw_name = params[:vm_name]
+	vm_name = raw_name.to_s
+	if Vmdomain.register_domain(vm_name) 
+  	erb :index
+	else
+		
+		erb :index
+	end
+end
 #get '/vm/suspend/*' do
 #	puts params[:splat]
 #  vm_name = params[:splat]
@@ -95,7 +120,7 @@ end
 #end
 
 error do
-  'エラーが発生しました。 - ' + env['sinatra.error'].name
+  'エラーが発生しました。 - ' 
 end
 
 set :public, File.dirname("./public/css") 

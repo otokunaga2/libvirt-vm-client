@@ -1,4 +1,5 @@
 require 'libvirt'
+require './dbmanager.rb'
 #require './target_list.txt'
 class LibClient
   attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list
@@ -51,10 +52,15 @@ class LibClient
     rescue => e
       raise "#{e},File not found exeption" 
     end
-    f.each do |vmname|
-      @targetlist.push(vmname.chomp)
-      p vmname
-    end
+		instance = Vmdomain.all
+		puts instance
+		instance.each do |element|
+			@targetlist.push(element.id)	
+		end
+    #f.each do |vmname|
+    #  @targetlist.push(vmname.chomp)
+    #  p vmname
+    #end
     p @targetlist
   
     @targetlist.each_with_index{ |vm,i|
@@ -133,10 +139,12 @@ class LibClient
   def get_specific_domain(domain_name)
     @con.list_domains.each do |domid|
       @dom = @con.lookup_domain_by_id(domid)
-      if(domain_name == @dom.name)
-				puts @dom.class
-        return @dom
-      end
+			 if @dom 
+        if(domain_name == @dom.name)
+			  	puts @dom.class
+          return @dom
+        end
+			end
     end
     return nil
   end
@@ -153,10 +161,10 @@ end
 
 
 
-temp = LibClient.new
+#temp = LibClient.new
  #p temp.getDomainsList
  #p temp.get_domain_info("Domain-0")
-temp.resume("win7-001")
+#temp.suspend("Domain-0")
  #UUID = '93a5c045-6457-2c09-e5ff-927cdf34e17b'
  #GUEST_DISK = '/var/lib/libvirt/images/example.qcow2'
  #new_dom_xml = <<EOF

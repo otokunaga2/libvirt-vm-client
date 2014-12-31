@@ -9,3 +9,4 @@ gem 'rspec'
 gem 'rubocop'
 gem "sqlite3"
 gem "activerecord"
+gem "ruby-libvirt"

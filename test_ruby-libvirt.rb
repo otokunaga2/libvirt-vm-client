@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'ruby-libvirt'
+require './libvirt-wrapper.rb'
 
 class TC_LibClient < Test::Unit::TestCase
   def setup
