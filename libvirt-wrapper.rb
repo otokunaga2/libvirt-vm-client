@@ -1,27 +1,26 @@
 require 'libvirt'
 require './dbmanager.rb'
-require 'parallel'
+#require 'parallel'
 #require './target_list.txt'
 class LibClient
   attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmconnect
-
 	def initialize
-    p "begin initial"
     @running_vm_list = []
   	@hold_vm_list = []
     @vmconnect=Hash.new
     @targetlist=[]
-    iplist = ["157.1.138.6","157.1.138.7","157.1.138.8","157.1.138.9" ]
+    iplist = ["157.1.138.5","157.1.138.6","157.1.138.7","157.1.138.8","157.1.138.9" ]
+    #iplist = ["157.1.138.5"]
 		iplist.each do |ipname|
-      begin 
+    begin 
 			#instance_variable_set('@running'+ipname.gsub(".",""),[]) 
 			@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
       rescue => e
         raise "#{e},connection does not open check the virsh is alive"
       end
 		 end
+		 puts Vmtarget.getAllIpaddr
 
-     p @vmconnect["157.1.138.6"]
   end
   def compareVMList(ipaddr)
     #@vm_detail_list=[] => unused
@@ -96,7 +95,7 @@ class LibClient
  # 		raise e
  # 	end
  # end
-	def resume( target_vm )
+	def resume(target_vm)
 		tempvm = get_specific_domain( target_vm )
 		if ( tempvm != nil )
 		  begin
@@ -126,3 +125,4 @@ class LibClient
 		end
   end
 end
+tmp = LibClient.new

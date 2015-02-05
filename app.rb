@@ -8,7 +8,7 @@ require './dbmanager.rb'
 #       必要なとき get '/vm/domain01' などを実行したときに初めて比較して、出力するようにロジックを買える
 configure do
   @@libclient = LibClient.new
-
+  @@iplists = 
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
