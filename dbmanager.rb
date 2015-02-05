@@ -21,8 +21,7 @@ class Vmtarget < ActiveRecord::Base
 	#		return temp_domain.save
 	#	end
 		def getTargetList
-			self.group().pluck(:)
-
+			self.group().pluck()
 		end
 		def getSpecificList(ipaddr)
 		end
@@ -43,4 +42,3 @@ class Vmtarget < ActiveRecord::Base
 	#	end
 	end
 end
-
