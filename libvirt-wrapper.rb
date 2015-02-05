@@ -7,29 +7,33 @@ class LibClient
 		STOP = 3
 		#IDLE = 2
 		RUNNING = 1 
+
 	def initialize
+
+    @running_vm_list = []
+  	@hold_vm_list = []
     @vmconnect=Hash.new
     @targetlist=[]
-
     iplist = ["157.1.138.7","157.1.138.8"]
 		iplist.each do |ipname|
-      begin instance_variable_set('@running'+ipname.gsub(".",""),[]) #set the running lists @vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
+      begin instance_variable_set('@running'+ipname.gsub(".",""),[]) 
+			@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
       rescue => e
         raise "#{e},connection does not open check the virsh is alive"
       end
 		 end
   end
-  
+  #げきおもい
   def compareVMList(ipaddr)
     #@vm_detail_list=[] => unused
-    @vmconnect[ipaddr].list_domains.each do |domid|
-      dom = @vmconnect.lookup_domain_by_id(domid)
-	  	temp_vm_domain = get_specific_domain(dom.name)
-	  	if temp_vm_domain.info.state == RUNNING
-	  	 (@running<<ipaddr).push(dom.name)
-	  	elsif temp_vm_domain.info.state == STOP
-	  	  (@hold<<ipaddr).push(dom.name)
-	  	end
+    tmpconnect = @vmconnect[ipaddr.to_s]
+		tmpconnect.list_domains.each do |domid|
+      dom = @vmconnect[ipaddr].lookup_domain_by_id(domid)
+			if(dom.state.first == 1)
+	  		@running_vm_list.push(dom.name)
+			elsif(dom.state.first == 2)
+	  		@hold_vm_list.push(dom.name)
+			end
     end
 	end
   #should stand up the vm
@@ -52,9 +56,6 @@ class LibClient
       if(vm.to_s == existvm.to_s)
         @targetlist.delete_at(i) end end }
     return @targetlist
-  end
-  def create_domain_xml(input_xml)
-    
   end
 
   def start(target_vm)
@@ -117,16 +118,15 @@ class LibClient
 		  end
     end
 	end
-  def get_specific_domain( domain_name )
-    @vmconnect.list_domains.each do |domid|
-      @dom = @vmconnect.lookup_domain_by_id(domid)
-			 if @dom 
-        if ( domain_name == @dom.name )
-          return @dom
+  def get_specific_domain( domain_name, ipaddr )
+    @vmconnect[ipaddr].list_domains.each do |domid|
+      dom = @vmconnect[ipaddr].lookup_domain_by_id(domid)
+			 if dom 
+        if ( domain_name == dom.name )
+          return dom
         end
 			end
     end
-    return nil
   end
   #suspendしていたvmを上げる
   def reboot(target_vm)
@@ -140,3 +140,4 @@ class LibClient
 end
 
 tmp =  LibClient.new
+list = tmp.compareVMList("157.1.138.7")
