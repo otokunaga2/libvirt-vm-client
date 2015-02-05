@@ -1,30 +1,34 @@
 require 'libvirt'
 require './dbmanager.rb'
+require 'parallel'
 #require './target_list.txt'
 class LibClient
-  attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list
+  attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmhash
 		STOP = 3
 		IDLE = 2
-		RUNNING = 1
-  def initialize(current_ipadress)
-    @con=nil
+		RUNNING = 1 
+	def initialize
+    @vmconnect=nil
     @targetlist=[]
     @running_vm_list=[]
 		@hold_vm_list=[]
 		@idle_vm_list=[]
-		@current_ipadress = current_ipadress
-    #Thread
-    begin
-      @con = Libvirt::open("xen+tcp://" << current_ipadress.to_s)
-    rescue=> e
-      raise "#{e},connection does not open check the virsh is alive"
-    end
+    iplist = ["157.1.138.7","157.1.138.8"]
+		@vmhash = Hash.new
+		iplist.each do |ipname|
+      begin
+			  puts ipname
+        @vmhash[ipname] = Libvirt::open("xen+tcp://" << ipname)
+      rescue=> e
+        raise "#{e},connection does not open check the virsh is alive"
+      end
+		 end
   end
 
   def compareVMList
     #@vm_detail_list=[] => unused
-    @con.list_domains.each do |domid|
-      dom = @con.lookup_domain_by_id(domid)
+    @vmconnect.list_domains.each do |domid|
+      dom = @vmconnect.lookup_domain_by_id(domid)
 	  	temp_vm_domain = get_specific_domain(dom.name)
 	  	if temp_vm_domain.info.state == RUNNING
 	  	 @running_vm_list.push(dom.name)
@@ -79,7 +83,7 @@ class LibClient
   def create_domain_xml(new_dom_xml)
     #よりょくがあれば、このxmlファイルを動的に変更できるようにする
     begin
-      dom = @con.create_domain_xml(new_dom_xml)
+      dom = @vmconnect.create_domain_xml(new_dom_xml)
     rescue Libvirt::Error 
       p "libvirt error"
       return -1
@@ -94,7 +98,7 @@ class LibClient
   def suspend(target_vm) 
     tempvm = get_specific_domain(target_vm) 
 		begin
-      tempvm.suspend #@con.list_domains.each do |domid|
+      tempvm.suspend #@vmconnect.list_domains.each do |domid|
 		rescue => e
 			puts e
 			raise e end
@@ -103,7 +107,7 @@ class LibClient
   def destroy(target_vm) 
     tempvm = get_specific_domain(target_vm) 
 		begin
-      tempvm.destroy #@con.list_domains.each do |domid|
+      tempvm.destroy #@vmconnect.list_domains.each do |domid|
 		rescue NoMethodError => e
 			p e
 			raise e
@@ -120,8 +124,8 @@ class LibClient
     end
 	end
   def get_specific_domain( domain_name )
-    @con.list_domains.each do |domid|
-      @dom = @con.lookup_domain_by_id(domid)
+    @vmconnect.list_domains.each do |domid|
+      @dom = @vmconnect.lookup_domain_by_id(domid)
 			 if @dom 
         if ( domain_name == @dom.name )
           return @dom
@@ -141,5 +145,5 @@ class LibClient
   end
 end
 
-tm =  LibClient.new("157.1.138.7")
-p tm.compareVMList
+tmp =  LibClient.new
+p tmp.vmhash

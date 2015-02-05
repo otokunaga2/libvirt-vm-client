@@ -9,6 +9,7 @@ require './dbmanager.rb'
 configure do
 	@error_message=nil
   vmtarget = Vmtarget.getTargetList
+
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
@@ -19,11 +20,11 @@ helpers do
 end
 
 before do
-	@libvirt_insatance = LibClient.new("157.1.138.6")
-  @list= @libvirt_insatance.getDomainsList
+	#@libvirt_insatance = LibClient.new("157.1.138.6")
+  #@list= @libvirt_insatance.getDomainsList
 	#@idle_vm_list = @libvirt_insatance.idle_vm_list
-	@hold_vm_list = @libvirt_insatance.hold_vm_list
-  @compare_vmlist= @libvirt_insatance.compareVMList
+	#@hold_vm_list = @libvirt_insatance.hold_vm_list
+  #@compare_vmlist= @libvirt_insatance.compareVMList
 end
 get '/' do erb :index
 end
@@ -36,8 +37,6 @@ end
 get '/vm/delete/*' do
   vm_name = params[:splat]
 	vm_str = vm_name[0].to_s
-  target_domain = Vmdomain.where(:id=>vm_str).first
-	target_domain.destroy
 end
 get '/vm/resume/*' do
   vm_name = params[:splat]
@@ -63,7 +62,6 @@ get '/vm/suspend/*' do
     vm_str_name = vm_name[0].to_s	
 		vm = @libvirt_insatance.suspend(vm_str_name)
     if vm 
-		  Vmdomain.update_suspend_time(vm_str_name)
 		  if(vm.state.first != 3)
 		   	vm.suspend
 		  else
@@ -72,7 +70,6 @@ get '/vm/suspend/*' do
 	  end	
 	rescue => e
 		@error_message=e
-		puts "No method error#{e}"
 	end
 	#puts vm_name.methods
   #@libvirt_insatance.reboot(vm_str_name)
@@ -101,16 +98,16 @@ end
 #	@checklist = Vmdomain.all
 #	erb :create
 #end
-post '/vm/create' do
-  raw_name = params[:vm_name]
-	vm_name = raw_name.to_s
-	if Vmdomain.register_domain(vm_name) 
-  	erb :index
-	else
-		
-		erb :index
-	end
-end
+#post '/vm/create' do
+#  raw_name = params[:vm_name]
+#	vm_name = raw_name.to_s
+#	if Vmdomain.register_domain(vm_name) 
+#  	erb :index
+#	else
+#		
+#		erb :index
+#	end
+#end
 
 error do
   'エラーが発生しました。 - ' 

@@ -10,3 +10,4 @@ gem 'rubocop'
 gem "sqlite3"
 gem "activerecord"
 gem "ruby-libvirt"
+gem "parallel"
