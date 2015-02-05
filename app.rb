@@ -33,7 +33,6 @@ get '/' do
 end
 
 before do
-	@running_vm_list = []
 end
 get '/vm/ipaddr/:ipaddr' do
   @running_vm_list = @@libclient.compareVMList(params[:ipaddr])

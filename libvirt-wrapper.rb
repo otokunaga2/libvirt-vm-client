@@ -6,37 +6,39 @@ class LibClient
   attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmconnect
 
 	def initialize
-
-  @running_vm_list = []
   	@hold_vm_list = []
-    @vmconnect=Hash.new
+    @@vmconnect=Hash.new
     @targetlist=[]
-    iplist = ["157.1.138.5","157.1.138.6","157.1.138.7","157.1.138.8","157.1.138.9" ]
-    #iplist = ["157.1.138.5"]
+		iplist=["157.1.138.5","157.1.138.6","157.1.138.7","157.1.138.8","157.1.138.9","157.1.138.10"]
+		#iplist = Vmtarget.getAllIpaddr
 		iplist.each do |ipname|
     begin 
 			#instance_variable_set('@running'+ipname.gsub(".",""),[]) 
-			@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
+			@@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
       rescue => e
         raise "#{e},connection does not open check the virsh is alive"
       end
 		 end
   end
   def compareVMList(ipaddr)
+	    running_vm_list = []
 			begin
-		    @vmconnect[ipaddr.to_s].list_domains.each do |domid|
-			    dom = @vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
-		    	if(dom.state.first == 1 && !@running_vm_list.include?(dom.name))
-	      		@running_vm_list.push(dom.name)
-		    	elsif(dom.state.first == 2)
-	      		@hold_vm_list.push(dom.name)
+		    @@vmconnect[ipaddr.to_s].list_domains.each do |domid|
+			    dom = @@vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
+		    	if(dom.state.first != 3 )
+		    	#if(dom.state.first != 2)
+	      		running_vm_list.push(dom.name)
+		    	#elsif(dom.state.first == 2)
+	      		#@hold_vm_list.push(dom.name)
 		    	end
 		    end
 			rescue => e
 				return []
 			end
-			return @running_vm_list
+			return running_vm_list
 	end
+
+
   def compareVMListFromTargetlist #  p File.absolute_path("..")
   #
     begin
