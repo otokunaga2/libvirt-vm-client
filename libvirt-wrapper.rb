@@ -19,8 +19,6 @@ class LibClient
         raise "#{e},connection does not open check the virsh is alive"
       end
 		 end
-		 puts Vmtarget.getAllIpaddr
-
   end
   def compareVMList(ipaddr)
     #@vm_detail_list=[] => unused
@@ -125,4 +123,3 @@ class LibClient
 		end
   end
 end
-tmp = LibClient.new

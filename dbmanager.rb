@@ -21,10 +21,10 @@ class Vmtarget < ActiveRecord::Base
 	#		return temp_domain.save
 	#	end
 		def getTargetList
-			self.group().pluck()
+			self.pluck()
 		end
 		def getAllIpaddr
-		   self.find(:ipaddr)
+		   self.select(:ipaddr).distinct.pluck(:ipaddr)
 		end
 	#	def update_suspend_time(domain_name)
 	#  	target_domain = self.where(:id=>domain_name).first
@@ -43,3 +43,5 @@ class Vmtarget < ActiveRecord::Base
 	#	end
 	end
 end
+
+puts Vmtarget.getAllIpaddr

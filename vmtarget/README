@@ -4,7 +4,8 @@
 sqlite> .open vmip.db
 sqlite> .schema
 CREATE TABLE vmtarget(
-	id text,
+  id integer primary key,
+	ipaddr text,
 		vmname text
 		);
 sqlite> 

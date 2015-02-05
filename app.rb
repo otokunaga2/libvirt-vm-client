@@ -8,7 +8,7 @@ require './dbmanager.rb'
 #       必要なとき get '/vm/domain01' などを実行したときに初めて比較して、出力するようにロジックを買える
 configure do
   @@libclient = LibClient.new
-  @@iplists = 
+  @@iplists = Vmtarget.getAllIpaddr
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
@@ -23,6 +23,7 @@ before do
 end
 get '/' do
  @running_vm_list,@hold_vm_list = @@libclient.compareVMList("157.1.138.7")
+ @iplists = @@iplists 
  erb :index
 end
 
