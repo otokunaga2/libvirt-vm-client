@@ -4,17 +4,19 @@ require './dbmanager.rb'
 #require './target_list.txt'
 class LibClient
   attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmconnect
+
 	def initialize
-    @running_vm_list = []
+
+  @running_vm_list = []
   	@hold_vm_list = []
-    @@vmconnect=Hash.new
+    @vmconnect=Hash.new
     @targetlist=[]
     iplist = ["157.1.138.5","157.1.138.6","157.1.138.7","157.1.138.8","157.1.138.9" ]
     #iplist = ["157.1.138.5"]
 		iplist.each do |ipname|
     begin 
 			#instance_variable_set('@running'+ipname.gsub(".",""),[]) 
-			@@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
+			@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
       rescue => e
         raise "#{e},connection does not open check the virsh is alive"
       end
@@ -22,8 +24,8 @@ class LibClient
   end
   def compareVMList(ipaddr)
 			begin
-		    @@vmconnect[ipaddr.to_s].list_domains.each do |domid|
-			    dom = @@vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
+		    @vmconnect[ipaddr.to_s].list_domains.each do |domid|
+			    dom = @vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
 		    	if(dom.state.first == 1)
 	      		@running_vm_list.push(dom.name)
 		    	elsif(dom.state.first == 2)

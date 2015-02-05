@@ -6,9 +6,10 @@ require './dbmanager.rb'
 #  TODO 必要な箇所でデータを取得したりするように修正
 #       ー＞とくにlibvirt-wrapperのコンストラクタとデータを取得する箇所を切り分ける
 #       必要なとき get '/vm/domain01' などを実行したときに初めて比較して、出力するようにロジックを買える
-configure do
+configure do 
   @@libclient = LibClient.new
   @@iplists = Vmtarget.getAllIpaddr
+	@current_ip = 0 
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
@@ -26,9 +27,13 @@ get '/' do
  erb :index
 end
 
+before do
+	@running_vm_list = []
+end
 
 get '/vm/ipaddr/:ipaddr' do
   @running_vm_list = @@libclient.compareVMList(params[:ipaddr])
+	@current_ip = params[:ipaddr]
   erb :index
 end
 

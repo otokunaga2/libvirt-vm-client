@@ -15,12 +15,12 @@
         </div> 
         <div class="col-sm-9 col-sm-offset-3">
         <h1 class="page-header">VM working manager</h1>
-				<!--<div class="panel panel-default">-->
-
-				<h2>hostname</h2>
+	      
+				<h2>current host ip</h2>
+			 <div><%=@current_ip %></div>
+				<h3>ipaddress</h3>
 				<div> 
 					<ul class ="nav nav-tabs" role"tablist">
-					 <li class="active"><a href="#">Home</a></li>  
 					 <% @@iplists.each do |ipelem| %>
 					 <li><a href="/vm/ipaddr/<%=ipelem%>"><%=ipelem%></a></li>  
 					<!-- <li><a href="/vm/ipaddr/157.1.138.6">157.1.138.6</a></li>  
