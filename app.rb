@@ -28,10 +28,8 @@ get '/' do
 end
 
 
-get '/vm/ipaddr/*' do
-  vm_ip = params[:splat]
-  @running_vm_list,@hold_vm_list = @@libclient.compareVMList(vm_ip.to_s)
-  erb :index
+get '/vm/ipaddr/:ipaddr' do
+  @running_vm_list,@hold_vm_list = @@libclient.compareVMList("157.1.138.7")
 end
 
 get '/vm/delete/*' do
