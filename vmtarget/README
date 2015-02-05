@@ -1,0 +1,22 @@
+
+このDBの使い方
+
+sqlite> .open vmip.db
+sqlite> .schema
+CREATE TABLE vmtarget(
+	id text,
+		vmname text
+		);
+sqlite> 
+
+データのインポート
+(対象のDBを変えたい場合は、このディレクトリないで以下の手順を実行してください）
+
+$sqlite3 vmip.db
+sqlite> delete from vmtarget;  
+sqlite> .separator ,
+sqlite> .import targetlist.csv 
+
+データの確認は、下記コマンド
+sqlite>  select * from vmtarget;
+

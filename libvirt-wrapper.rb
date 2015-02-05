@@ -13,34 +13,29 @@ class LibClient
 		@hold_vm_list=[]
 		@idle_vm_list=[]
 		@current_ipadress = current_ipadress
+    #Thread
     begin
       @con = Libvirt::open("xen+tcp://" << current_ipadress.to_s)
     rescue=> e
       raise "#{e},connection does not open check the virsh is alive"
     end
-    
-    #@vm_detail_list=[] => unused
-    unless @con == nil
-      @con.list_domains.each do |domid|
-        dom = @con.lookup_domain_by_id(domid)
-	  		temp_vm_domain = get_specific_domain(dom.name)
-	  		if temp_vm_domain.info.state == RUNNING
-	  		 @running_vm_list.push(dom.name)
-	  		elsif temp_vm_domain.info.state == IDLE # 			@idle_vm_list.push(dom.name)
-	  		elsif temp_vm_domain.info.state == STOP
-	  		  @hold_vm_list.push(dom.name)
-	  		end
-      end
-    end
   end
 
-  def getDomainsList
-     return @running_vm_list
-     #return @vm_detail_list
-  end 
-
+  def compareVMList
+    #@vm_detail_list=[] => unused
+    @con.list_domains.each do |domid|
+      dom = @con.lookup_domain_by_id(domid)
+	  	temp_vm_domain = get_specific_domain(dom.name)
+	  	if temp_vm_domain.info.state == RUNNING
+	  	 @running_vm_list.push(dom.name)
+	  	elsif temp_vm_domain.info.state == IDLE # 			@idle_vm_list.push(dom.name)
+	  	elsif temp_vm_domain.info.state == STOP
+	  	  @hold_vm_list.push(dom.name)
+	  	end
+    end
+	end
   #should stand up the vm
-  def compareVMList #  p File.absolute_path("..")
+  def compareVMListFromTargetlist #  p File.absolute_path("..")
   #
     begin
 		  prefix = @current_ipadress.to_s.gsub(".","")
@@ -57,10 +52,7 @@ class LibClient
     @targetlist.each_with_index{ |vm,i|
     @running_vm_list.each do |existvm|
       if(vm.to_s == existvm.to_s)
-        @targetlist.delete_at(i)
-      end
-    end
-    }
+        @targetlist.delete_at(i) end end }
     return @targetlist
   end
   def create_domain_xml(input_xml)
@@ -148,3 +140,6 @@ class LibClient
 		end
   end
 end
+
+tm =  LibClient.new("157.1.138.7")
+p tm.compareVMList

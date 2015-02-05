@@ -1,5 +1,5 @@
 db:
   development:
     adapter: sqlite3
-    database: vmtarget.db
+    database: vmtarget/vmip.db
 #  database: meibo.db
