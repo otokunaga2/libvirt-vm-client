@@ -2,8 +2,8 @@
   <head>
    <title>VMWebChecker</title>
    <meta charset=utf-8>
-   <link rel="stylesheet" href="http://localhost:4567/css/bootstrap.min.css" >
-   <link rel="stylesheet" href="http://localhost:4567/css/bootstrap-theme.min.css" >
+<!--   <link rel="stylesheet" href="http://localhost:4567/css/bootstrap.min.css" >
+   <link rel="stylesheet" href="http://localhost:4567/css/bootstrap-theme.min.css" >-->
   </head>
   <body>
     <div class="container">
@@ -17,6 +17,14 @@
         <h1 class="page-header">VM working manager</h1>
 				<!--<div class="panel panel-default">-->
 
+				<h2>hostname</h2>
+				<div> 
+					<ul class ="nav nav-tabs" role"tablist">
+					 <li class="active"><a href="#">Home</a></li>  
+					 <li><a href="/webapi/ipaddr/">157.1.138.6</a></li>  
+					 <li><a href="/webapi/ipaddr/">157.1.138.7</a></li>  
+					</ul>
+				</div>
 				<h3>running vms</h3>
 				<table class="table">
 				  <thead>
@@ -57,7 +65,7 @@
                 </td>
 								<td>
 					    	<a href="/vm/resume/<%=domain%>" class="btn">resume</a>
-					    	<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
+					    <!--	<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>-->
                 </td>
             </tr>
               <% end %>
@@ -81,7 +89,7 @@
               <%= not_working %>
 					  </td>
 					  <td>
-						  <a href="/vm/run/<%=not_working%>" class="btn">run</a>
+						  <a href="/vm/resume/<%=not_working%>" class="btn">run</a>
 						</td>
 					 </tr>
           <% end %>

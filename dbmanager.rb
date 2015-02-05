@@ -2,8 +2,8 @@
 require 'active_record'
 #require 'sqllite3'
 #
-ActiveRecord::Base.configurations = YAML.load_file('database.yml')
-ActiveRecord::Base.establish_connection('development')
+config = ActiveRecord::Base.configurations = YAML.load_file('./database.yml')
+ActiveRecord::Base.establish_connection(config["db"]["development"])
 #
 
 #class Student < ActiveRecord::Base
