@@ -9,7 +9,6 @@ require './dbmanager.rb'
 configure do
   @@libclient = LibClient.new
 
-  Vmtarget.getSpecificList
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
@@ -26,11 +25,13 @@ get '/' do
  @running_vm_list,@hold_vm_list = @@libclient.compareVMList("157.1.138.7")
  erb :index
 end
-get '/vm/ipaddr/*' do
-  vm_name = params[:splat]
-  vm_name[0].to_s 
-end
 
+
+get '/vm/ipaddr/*' do
+  vm_ip = params[:splat]
+  @running_vm_list,@hold_vm_list = @@libclient.compareVMList(vm_ip.to_s)
+  erb :index
+end
 
 get '/vm/delete/*' do
   vm_name = params[:splat]

@@ -4,24 +4,24 @@ require 'parallel'
 #require './target_list.txt'
 class LibClient
   attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmconnect
-		STOP = 3
-		#IDLE = 2
-		RUNNING = 1 
 
 	def initialize
-
+    p "begin initial"
     @running_vm_list = []
   	@hold_vm_list = []
     @vmconnect=Hash.new
     @targetlist=[]
-    iplist = ["157.1.138.7","157.1.138.8"]
+    iplist = ["157.1.138.6","157.1.138.7","157.1.138.8","157.1.138.9" ]
 		iplist.each do |ipname|
-      begin instance_variable_set('@running'+ipname.gsub(".",""),[]) 
+      begin 
+			#instance_variable_set('@running'+ipname.gsub(".",""),[]) 
 			@vmconnect[ipname] = Libvirt::open("xen+tcp://" << ipname)
       rescue => e
         raise "#{e},connection does not open check the virsh is alive"
       end
 		 end
+
+     p @vmconnect["157.1.138.6"]
   end
   def compareVMList(ipaddr)
     #@vm_detail_list=[] => unused
@@ -126,4 +126,3 @@ class LibClient
 		end
   end
 end
-
