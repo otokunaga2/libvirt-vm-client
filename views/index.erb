@@ -34,44 +34,20 @@
 				  	</tr>
 				  </thead>
 					<tbody>
-            <% @list.each do |domain| %>
-              <tr>
-                <td>
-                  <%= domain %>
-							   </td>
-                <td>
-				  		    <a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
-                </td>
-							</tr>
-            <% end %>
-						</tbody>
+
+				<% 
+				 @running_vm_list.each do |domain| %>
+				<td>
+				<%= domain %>
+				</td>
+				<td>
+				<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>
+				</td>
+				</tr>
+        <% end %>
 				</div>
 				</table>
-				<h3>suspended vms</h3>
 
-				<table class="table">
-				  <thead>
-				  	<tr>
-				  		<th> domain name </th>
-				  		<th> action </th>
-				  	</tr>
-				  </thead>
-
-					<tbody>
-              <% @hold_vm_list.each do |domain| %>
-            	<tr>
-                <td>
-                  <%= domain %>
-                </td>
-								<td>
-					    	<a href="/vm/resume/<%=domain%>" class="btn">resume</a>
-					    <!--	<a href="/vm/suspend/<%=domain%>" class="btn">suspend</a>-->
-                </td>
-            </tr>
-              <% end %>
-					</tbody>
-				</div>
-				</table>
 				<h3> check target list </h3>
 
 				<table class="table">
@@ -82,19 +58,8 @@
 				  	</tr>
 				  </thead>
 
-					<tbody>
-          <% @compare_vmlist.each do |not_working| %>
-					 <tr>
-					  <td>
-              <%= not_working %>
-					  </td>
-					  <td>
-						  <a href="/vm/resume/<%=not_working%>" class="btn">run</a>
-						</td>
-					 </tr>
-          <% end %>
-					</tbody>
-				</table>
+					</tbody> -->
+				</table> 
 				<h4> error message </h4>
 				  <p>	<% if @error_message != nil  %>
 						<%= @error_message %>

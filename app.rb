@@ -7,16 +7,12 @@ require './dbmanager.rb'
 #       ー＞とくにlibvirt-wrapperのコンストラクタとデータを取得する箇所を切り分ける
 #       必要なとき get '/vm/domain01' などを実行したときに初めて比較して、出力するようにロジックを買える
 configure do
-	@error_message=nil
-  vmtarget = Vmtarget.getTargetList
+  @@libclient = LibClient.new
 
+  Vmtarget.getSpecificList
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
-  def compare_vmlist
-    @cont = self.create_connection
-    return @cont.compareVMList
-  end
 end
 
 before do
@@ -26,7 +22,9 @@ before do
 	#@hold_vm_list = @libvirt_insatance.hold_vm_list
   #@compare_vmlist= @libvirt_insatance.compareVMList
 end
-get '/' do erb :index
+get '/' do
+ @running_vm_list,@hold_vm_list = @@libclient.compareVMList("157.1.138.7")
+ erb :index
 end
 get '/vm/ipaddr/*' do
   vm_name = params[:splat]

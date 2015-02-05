@@ -3,7 +3,7 @@ require './dbmanager.rb'
 require 'parallel'
 #require './target_list.txt'
 class LibClient
-  attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmhash
+  attr_accessor :hold_vm_list, :idle_vm_list, :running_vm_list, :vmconnect
 		STOP = 3
 		#IDLE = 2
 		RUNNING = 1 
@@ -23,7 +23,6 @@ class LibClient
       end
 		 end
   end
-  #げきおもい
   def compareVMList(ipaddr)
     #@vm_detail_list=[] => unused
     tmpconnect = @vmconnect[ipaddr.to_s]
@@ -35,8 +34,8 @@ class LibClient
 	  		@hold_vm_list.push(dom.name)
 			end
     end
+		return [@running_vm_list,@hold_vm_list]
 	end
-  #should stand up the vm
   def compareVMListFromTargetlist #  p File.absolute_path("..")
   #
     begin
@@ -62,33 +61,22 @@ class LibClient
 		 target_vm =get_specific_domain(target_vm)		
    	 target_vm.start #create means the starting the vm domain 
   end
-  def get_domain_info(vm)
-    temp_domain = get_specific_domain(vm)
-    temp_domain.info.state
-    #if state == STOP
-    #  return "STOP"
-    #elsif state == LIVE
-    #  return "LIVE"
-    #else
-  end
-  def getVMList
-    return @running_vm_list
-  end
-  #file reading
-  def create_domain_xml(new_dom_xml)
-    #よりょくがあれば、このxmlファイルを動的に変更できるようにする
-    begin
-      dom = @vmconnect.create_domain_xml(new_dom_xml)
-    rescue Libvirt::Error 
-      p "libvirt error"
-      return -1
-    end
-    begin
-    dom.create    
-    rescue 
-    end
 
-  end
+  ##file reading
+  #def create_domain_xml(new_dom_xml)
+  #  #よりょくがあれば、このxmlファイルを動的に変更できるようにする
+  #  begin
+  #    dom = @vmconnect.create_domain_xml(new_dom_xml)
+  #  rescue Libvirt::Error 
+  #    p "libvirt error"
+  #    return -1
+  #  end
+  #  begin
+  #  dom.create    
+  #  rescue 
+  #  end
+
+  #end
 
   def suspend(target_vm) 
     tempvm = get_specific_domain(target_vm) 
@@ -99,15 +87,15 @@ class LibClient
 			raise e end
   end
 
-  def destroy(target_vm) 
-    tempvm = get_specific_domain(target_vm) 
-		begin
-      tempvm.destroy #@vmconnect.list_domains.each do |domid|
-		rescue NoMethodError => e
-			p e
-			raise e
-		end
-  end
+ # def destroy(target_vm) 
+ #   tempvm = get_specific_domain(target_vm) 
+ # 	begin
+ #     tempvm.destroy #@vmconnect.list_domains.each do |domid|
+ # 	rescue NoMethodError => e
+ # 		p e
+ # 		raise e
+ # 	end
+ # end
 	def resume( target_vm )
 		tempvm = get_specific_domain( target_vm )
 		if ( tempvm != nil )
@@ -139,5 +127,3 @@ class LibClient
   end
 end
 
-tmp =  LibClient.new
-list = tmp.compareVMList("157.1.138.7")
