@@ -26,7 +26,7 @@ class LibClient
 			begin
 		    @vmconnect[ipaddr.to_s].list_domains.each do |domid|
 			    dom = @vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
-		    	if(dom.state.first == 1)
+		    	if(dom.state.first == 1 && !@running_vm_list.include?(dom.name))
 	      		@running_vm_list.push(dom.name)
 		    	elsif(dom.state.first == 2)
 	      		@hold_vm_list.push(dom.name)

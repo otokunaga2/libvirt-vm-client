@@ -10,12 +10,15 @@ configure do
   @@libclient = LibClient.new
   @@iplists = Vmtarget.getAllIpaddr
 	@current_ip = 0 
+
+	@running_vm_list = []
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
 end
 
 before do
+  @current_ip = []
 	#@libvirt_insatance = LibClient.new("157.1.138.6")
   #@list= @libvirt_insatance.getDomainsList
 	#@idle_vm_list = @libvirt_insatance.idle_vm_list
@@ -24,16 +27,17 @@ before do
 	@running_vm_list = []
 end
 get '/' do
+
+	@running_vm_list = []
  erb :index
 end
 
 before do
 	@running_vm_list = []
 end
-
 get '/vm/ipaddr/:ipaddr' do
   @running_vm_list = @@libclient.compareVMList(params[:ipaddr])
-	@current_ip = params[:ipaddr]
+	@current_ip = params[:ipaddr].to_s
   erb :index
 end
 
