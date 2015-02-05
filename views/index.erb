@@ -9,9 +9,9 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
+        <!--<ul class="nav nav-sidebar">
        	  <li><a href="/vm/create">checkList</a></li>
-        </ul>
+        </ul> -->
         </div> 
         <div class="col-sm-9 col-sm-offset-3">
         <h1 class="page-header">VM working manager</h1>
@@ -21,7 +21,7 @@
 				<div> 
 					<ul class ="nav nav-tabs" role"tablist">
 					 <li class="active"><a href="#">Home</a></li>  
-					 <% @iplists.each do |ipelem| %>
+					 <% @@iplists.each do |ipelem| %>
 					 <li><a href="/vm/ipaddr/<%=ipelem%>"><%=ipelem%></a></li>  
 					<!-- <li><a href="/vm/ipaddr/157.1.138.6">157.1.138.6</a></li>  
 					 <li><a href="/vm/ipaddr/157.1.138.7">157.1.138.7</a></li>  -->
@@ -39,7 +39,8 @@
 					<tbody>
           
 				<% 
-				 @running_vm_list.each do |domain| %>
+					@running_vm_list.each do |domain|
+				 %>
 				<td>
 				<%= domain %>
 				</td>

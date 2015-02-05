@@ -20,16 +20,16 @@ before do
 	#@idle_vm_list = @libvirt_insatance.idle_vm_list
 	#@hold_vm_list = @libvirt_insatance.hold_vm_list
   #@compare_vmlist= @libvirt_insatance.compareVMList
+	@running_vm_list = []
 end
 get '/' do
- @running_vm_list,@hold_vm_list = @@libclient.compareVMList("157.1.138.7")
- @iplists = @@iplists 
  erb :index
 end
 
 
 get '/vm/ipaddr/:ipaddr' do
-  @running_vm_list,@hold_vm_list = @@libclient.compareVMList("157.1.138.7")
+  @running_vm_list = @@libclient.compareVMList(params[:ipaddr])
+  erb :index
 end
 
 get '/vm/delete/*' do

@@ -21,18 +21,19 @@ class LibClient
 		 end
   end
   def compareVMList(ipaddr)
-	    puts ipaddr
-			puts @@vmconnect[ipaddr.to_s] 
-		  @@vmconnect[ipaddr.to_s].list_domains.each do |domid|
-			puts domid
-    #    dom = @@vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
-		#  	if(dom.state.first == 1)
-	  #  		@running_vm_list.push(dom.name)
-		#  	elsif(dom.state.first == 2)
-	  #  		@hold_vm_list.push(dom.name)
-		  	end
-		#return [@running_vm_list,@hold_vm_list]
-		return []
+			begin
+		    @@vmconnect[ipaddr.to_s].list_domains.each do |domid|
+			    dom = @@vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
+		    	if(dom.state.first == 1)
+	      		@running_vm_list.push(dom.name)
+		    	elsif(dom.state.first == 2)
+	      		@hold_vm_list.push(dom.name)
+		    	end
+		    end
+			rescue => e
+				return []
+			end
+			return @running_vm_list
 	end
   def compareVMListFromTargetlist #  p File.absolute_path("..")
   #
