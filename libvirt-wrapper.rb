@@ -42,7 +42,7 @@ class LibClient
 			begin
 		    @@vmconnect[ipaddr.to_s].list_domains.each do |domid|
 			    dom = @@vmconnect[ipaddr.to_s].lookup_domain_by_id(domid)
-		    	if(dom.state.first == 3 && Vmtarget.getAllIpaddr.include?(dom.name) )
+		    	if(dom.state.first == 3 && Vmtarget.checkDomain(ipaddr.to_s).include?(dom.name))
 		    	#if(dom.state.first != 2)
 	      		hold_vm_list.push(dom.name)
 		    	#elsif(dom.state.first == 2)
@@ -102,8 +102,10 @@ class LibClient
     tempvm = get_specific_domain(target_vm,ipaddr) 
 		begin
       tempvm.suspend #@vmconnect.list_domains.each do |domid|
+			puts "exec!!!!!!!!!!!!!!!!!!!!!!!!!!111"
 		rescue => e
 			puts e
+			puts "error!!!!!!!!!!!!!!!!!!!!!!!!!!111"
 			raise e end
   end
 
