@@ -106,8 +106,10 @@ end
 post '/checklist/new' do
    maxid = Vmtarget.maximum(:id)
    nextid = maxid + 1
-   trimname = params[:domname].gsub(/(\s| )+/, '')
-   trimip = params[:ipaddr].gsub(/(\s| )+/, '')
+   trimname = params[:domname]
+   trimname = trimname.to_s.gsub(/(\s| )+/, '')
+   trimip = params[:ipaddr]
+   trimip = trimip.to_s.gsub(/(\s| )+/, '')
    Vmtarget.create(:id => nextid, :ipaddr => trimip, :vmname => trimname)
 redirect '/vm/regist'
 end

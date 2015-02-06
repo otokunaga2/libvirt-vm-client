@@ -1,7 +1,15 @@
-<form action="/checklist/new" method="post">
-  <input type="text" name ="ipaddr">
-  <input type="text" name ="domname">
-  <input type="submit"/>
-  <!--puts params[:ipaddr]
-  puts params[:domname]-->
+<head>
+<link rel="stylesheet" href="http://localhost:4567/css/bootstrap.min.css" >
+<link rel="stylesheet" href="http://localhost:4567/css/bootstrap-theme.min.css" >
+</head>
+<form action="/checklist/new" method="POST" >
+<div class="form-group">
+<label for="exampleInputIpaddress">ipaddress</label>
+<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter ipaddress" name="ipaddr">
+</div>
+<div class="form-group">
+<label for="exampleInputDomainName">domainname</label>
+<input type="text" class="form-control" id="exampleInputPassword1" placeholder="centos" name="domname">
+</div>
+<button type="submit" class="btn btn-default">Submit</button>
 </form>

@@ -1,32 +1,43 @@
-<h3>running vms</h3>
+<html>
+<head>
+<title>チェックVMの管理登録画面</title>
 
+<link rel="stylesheet" href="http://localhost:4567/css/bootstrap.min.css" >
+<link rel="stylesheet" href="http://localhost:4567/css/bootstrap-theme.min.css" >
 
-<div>
-<a href="/" class="btn">Home</a>
-</div>
-
-<div>
-<a href="/checklist/new" class="btn">新規登録</a>
-</div>
-<div class="table" id ="current">
-  <tr>
-  <% @ipmap.each do |k,v| %>
-    <td>
-    <%= k %>
-    </td>
-		<% v.each do |domain| %>
-    <td>
-     <input type="text" name = "ipaddr"  value= "<%=domain%> " disabled="disabled">
-	   <a href="/checklist/delete/<%=k%>/<%=domain%>" class="btn">delete</a>
-    <!--
-    <form action="/checklist/delete/<%=k%>" method ="post">
-      <input type="text" name = "ipaddr"  value= "<%=k%> " disabled="disabled">
-      <input type="text" name = "vmname"  value= "<%=domain%> " disabled="disabled">
-      <input type="submit" value="delete">
-    </form>-->
-	<!--	<a href="/checklist/edit" class="btn">edit</a>-->
-    </td>
-  <% end %>
-  <% end %>
-  </tr>
-</div>
+ <body>
+ <div class="container">
+     <div class="row">
+       <div class="col-sm-3 col-md-2 sidebar">
+         <div>
+         <a href="/" class="btn">ホーム</a>
+         </div>
+         <div>
+         <a href="/checklist/new" class="btn">新規登録</a>
+         </div>
+         <table class="table" id ="current">
+          <thead>
+            <tr>
+              <th> ipaddress & doamin name</th>
+            </tr>
+          </thead>
+          <tbody>
+           <% @ipmap.each do |k,v| %>
+           <ul>
+            <td>
+             <%= k %>
+             <% v.each do |domain| %>
+               <li>
+               <input type="text" name = "ipaddr"  value= "<%=domain%> " disabled="disabled">
+               <a href="/checklist/delete/<%=k%>/<%=domain%>" class="btn">delete</a>
+               </li>
+             <% end %>
+             </td>
+           <% end %>
+          </tbody>
+           </table>
+       </div>
+   </div>
+ </div>
+</body>
+</html>
