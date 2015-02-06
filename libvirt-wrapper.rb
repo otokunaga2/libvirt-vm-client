@@ -102,10 +102,8 @@ class LibClient
     tempvm = get_specific_domain(target_vm,ipaddr) 
 		begin
       tempvm.suspend #@vmconnect.list_domains.each do |domid|
-			puts "exec!!!!!!!!!!!!!!!!!!!!!!!!!!111"
 		rescue => e
 			puts e
-			puts "error!!!!!!!!!!!!!!!!!!!!!!!!!!111"
 			raise e end
   end
 
@@ -147,4 +145,3 @@ class LibClient
  # 	end
  # end
 end
-puts Vmtarget.checkDomain("157.1.138.10")

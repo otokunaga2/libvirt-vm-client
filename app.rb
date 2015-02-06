@@ -4,8 +4,8 @@ require './libvirt-wrapper.rb'
 require './dbmanager.rb'
 configure do 
   @@libclient = LibClient.new
-  @@iplists = Vmtarget.getAllIpaddr
 	@current_ip = 0 
+  @iplists = Vmtarget.getAllIpaddr
   #sessionの有効化
   enable :sessions
 	@running_vm_list = []
@@ -17,10 +17,9 @@ end
 
 before do
 	@running_vm_list = []
+  @hold_vm_list = []
 end
 get '/' do
-
-	@running_vm_list = []
  erb :index
 end
 
@@ -72,9 +71,45 @@ get '/vm/reboot/*' do
   erb :index
 end
 
-get '/vm/create' do
-	@checklist = Vmdomain.all
-  erb :create
+before do
+ @iplists = Vmtarget.getAllIpaddr
+end
+get '/vm/regist' do
+	@ipmap = Hash.new
+	@iplists.each do |ipelem|
+    @ipmap[ipelem] = Vmtarget.checkDomain(ipelem.to_s)
+	end
+  erb :register
+end
+
+get '/checklist/update/:vmname/:ipaddr' do
+ id = Vmtarget.getRegisteredInfo(params[:ipaddr],params[:vmname])
+ Vmtarget.update(id, :ipaddr => params[:ipaddr], :vmname => params[:domname])
+ erb :register
+end
+
+get '/checklist/delete/:ipaddr/:vmname' do
+puts params
+ puts "debug"
+ puts params[:ipaddr]
+ puts params[:vmname]
+ id = Vmtarget.getRegisteredInfo(params[:ipaddr],params[:vmname])
+ puts id
+ puts Vmtarget.delete(id)
+redirect '/vm/regist'
+end
+
+get '/checklist/new' do
+  erb :new
+end
+
+post '/checklist/new' do
+   maxid = Vmtarget.maximum(:id)
+   nextid = maxid + 1
+   trimname = params[:domname].gsub(/(\s| )+/, '')
+   trimip = params[:ipaddr].gsub(/(\s| )+/, '')
+   Vmtarget.create(:id => nextid, :ipaddr => trimip, :vmname => trimname)
+redirect '/vm/regist'
 end
 
 #get 'vm/edit' do

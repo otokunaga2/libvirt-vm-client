@@ -1,14 +1,30 @@
 <h3>running vms</h3>
+
+
+<div>
+<a href="/" class="btn">Home</a>
+</div>
+
+<div>
+<a href="/checklist/new" class="btn">新規登録</a>
+</div>
 <div class="table" id ="current">
   <tr>
   <% @ipmap.each do |k,v| %>
     <td>
     <%= k %>
     </td>
-		<% v.each do |ipelem| %>
+		<% v.each do |domain| %>
     <td>
-    <%= ipelem %>
-		<a href="/vm/suspend/" class="btn">run</a>
+     <input type="text" name = "ipaddr"  value= "<%=domain%> " disabled="disabled">
+	   <a href="/checklist/delete/<%=k%>/<%=domain%>" class="btn">delete</a>
+    <!--
+    <form action="/checklist/delete/<%=k%>" method ="post">
+      <input type="text" name = "ipaddr"  value= "<%=k%> " disabled="disabled">
+      <input type="text" name = "vmname"  value= "<%=domain%> " disabled="disabled">
+      <input type="submit" value="delete">
+    </form>-->
+	<!--	<a href="/checklist/edit" class="btn">edit</a>-->
     </td>
   <% end %>
   <% end %>
