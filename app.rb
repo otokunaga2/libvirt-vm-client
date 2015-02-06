@@ -10,15 +10,15 @@ configure do
   @@libclient = LibClient.new
   @@iplists = Vmtarget.getAllIpaddr
 	@current_ip = 0 
-
+  enable :sessions
 	@running_vm_list = []
+	@hold_vm_list = []
   #fileからVMリストを読み出すことを実行する
 end
 helpers do 
 end
 
 before do
-  @current_ip = []
 	#@libvirt_insatance = LibClient.new("157.1.138.6")
   #@list= @libvirt_insatance.getDomainsList
 	#@idle_vm_list = @libvirt_insatance.idle_vm_list
@@ -33,10 +33,12 @@ get '/' do
 end
 
 before do
+  @hold_vm_list= @@libclient.compareVMWithCheck(session[:ipaddr])
 end
 get '/vm/ipaddr/:ipaddr' do
+  session[:currentip] = params[:ipaddr]
   @running_vm_list = @@libclient.compareVMList(params[:ipaddr])
-	@current_ip = params[:ipaddr].to_s
+	@current_ip = session[:currentip] 
   erb :index
 end
 
@@ -44,36 +46,18 @@ get '/vm/delete/*' do
   vm_name = params[:splat]
 	vm_str = vm_name[0].to_s
 end
-get '/vm/resume/*' do
-  vm_name = params[:splat]
-  vm_str_name = vm_name[0].to_s	
-	
-	vm = @libvirt_insatance.get_specific_domain(vm_str_name)
-	if (vm != nil)
-	  if( vm.state.first == 3)
-	  	vm.resume
-	  else
-	    @error_message="already running"
-	  end
-	end
-	#puts vm_name.methods
-  #@libvirt_insatance.reboot(vm_str_name)
+get '/vm/resume/:domain*' do
+  vm_name = params[:domain]
+	vm = @@libclient.resume(vm_name,current_ip)
+  @hold_vm_list= @@libclient.compareVMWithCheck(session[:ipaddr])
   erb :index
 end
 
-
-get '/vm/suspend/*' do
-  vm_name = params[:splat]
+get '/vm/suspend/:domain*' do
+  vm_name = params[:domain]
 	begin
-    vm_str_name = vm_name[0].to_s	
-		vm = @libvirt_insatance.suspend(vm_str_name)
-    if vm 
-		  if(vm.state.first != 3)
-		   	vm.suspend
-		  else
-		  	@error_message="already suspended"
-		  end
-	  end	
+   #@@libclient.suspend(vm_name,session[:current_ip])
+    puts @@libclient.get_specific_domain(vm_name.to_s,session[:current_ip])
 	rescue => e
 		@error_message=e
 	end

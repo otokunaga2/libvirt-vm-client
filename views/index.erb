@@ -61,8 +61,20 @@
 				  		<th> last suspend time </th>
 				  	</tr>
 				  </thead>
-
-					</tbody> -->
+					<tbody>
+				<% 
+					@hold_vm_list.each do |domain|
+				 %>
+				<td>
+				<%= domain %>
+				</td>
+				<td>
+				<a href="/vm/resume/<%=domain%>" class="btn">resume</a>
+				</td>
+				</tr>
+        <% end %>
+				</div>
+					</tbody>
 				</table> 
 				<h4> error message </h4>
 				  <p>	<% if @error_message != nil  %>
