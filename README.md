@@ -12,10 +12,18 @@ libvirt-vm-client is a libvirt-based Web interface for managing virtual machines
 ##運用動作環境
 
 
-## How to execute
-ruby app.rb (Sinatraを利用しているため、デフォルトで4563番を使います）
+##依存関係
 
-## Screenshots
+- gem'sinatra'
+- gem 'sinatra-reloader'
+- gem "sqlite3"
+- gem "activerecord"
+- gem "ruby-libvirt"
+
+- 
+## How to execute
+ruby app.rb (Sinatraを利用しているため、デフォルトで4563にポートが設定されます。）
+
 
 
 
