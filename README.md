@@ -13,7 +13,6 @@ libvirt-vm-client is a libvirt-based Web interface for managing virtual machines
 
 
 ##依存関係
-
 - gem'sinatra'
 - gem 'sinatra-reloader'
 - gem "sqlite3"
